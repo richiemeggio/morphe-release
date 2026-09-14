@@ -6,7 +6,9 @@ import json, os, pathlib, sys, urllib.parse, urllib.request
 
 REPOS = [
     "MorpheApp/morphe-patches",
-    "MorpheApp/MicroG-RE"
+    "MorpheApp/MicroG-RE",
+    "brosssh/morphe-patches",
+    "crimera/piko"
 ]
 
 STATE_FILE = pathlib.Path("state.json")
