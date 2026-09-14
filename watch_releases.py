@@ -5,9 +5,8 @@
 import json, os, pathlib, sys, urllib.parse, urllib.request
 
 REPOS = [
-    "EdgeTypE/better-deepseek",
-    # "sveltejs/svelte",
-    # "microsoft/vscode",
+    "MorpheApp/morphe-patches",
+    "MorpheApp/MicroG-RE"
 ]
 
 STATE_FILE = pathlib.Path("state.json")
