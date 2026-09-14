@@ -82,13 +82,8 @@ def main() -> None:
             continue
 
         name = rel.get("name") or tag
-        body = (rel.get("body") or "").strip()
-        if len(body) > 800:
-            body = body[:800] + "…"
 
         msg = f"🚀 Nuova release: {repo}\n\n{tag} — {name}\n{rel['html_url']}"
-        if body:
-            msg += f"\n\n{body}"
 
         try:
             telegram_send(msg)
