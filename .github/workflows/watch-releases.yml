@@ -1,0 +1,44 @@
+# .github/workflows/watch-releases.yml
+name: Watch external releases → Telegram
+
+on:
+  schedule:
+    # Ogni 30 minuti. GitHub usa UTC. Le schedulazioni possono ritardare
+    # di 5-15 min nei momenti di picco, è normale.
+    - cron: '*/30 * * * *'
+  workflow_dispatch:        # ti permette di lanciarlo a mano per testare
+
+permissions:
+  contents: write           # serve per riscrivere state.json nel repo
+
+concurrency:
+  group: watch-releases
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del repo (per leggere/scrivere lo stato)
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Controlla le release e notifica
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}   # 1000 req/h invece di 60
+        run: python watch_releases.py
+
+      - name: Salva lo stato aggiornato
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add state.json
+          git commit -m "chore: update release state [skip ci]" || echo "Nessuna modifica"
+          git push
