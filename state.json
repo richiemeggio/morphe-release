@@ -1,3 +1,5 @@
 {
-  "EdgeTypE/better-deepseek": "v0.1.13"
+  "EdgeTypE/better-deepseek": "v0.1.13",
+  "MorpheApp/MicroG-RE": "7.1.2-dev.1",
+  "MorpheApp/morphe-patches": "v1.43.0"
 }
