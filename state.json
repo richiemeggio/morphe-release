@@ -1,6 +1,6 @@
 {
-  "MorpheApp/MicroG-RE": "7.1.2-dev.3",
-  "MorpheApp/morphe-patches": "v1.44.0-dev.2",
+  "MorpheApp/MicroG-RE": "7.2.1-dev.1",
+  "MorpheApp/morphe-patches": "v1.44.0-dev.3",
   "brosssh/morphe-patches": "v2.8.2",
   "crimera/piko": "v3.10.0-dev.8"
 }
