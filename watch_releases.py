@@ -47,10 +47,22 @@ def telegram_send(text: str) -> None:
 
 
 def latest_release(repo: str) -> dict | None:
-    """Ultima release. Include prerelease, esclude le draft."""
+    """Ultima release stabile (non prerelease). Include prerelease, esclude le draft."""
     # /releases/latest NON restituisce le prerelease; /releases?per_page=1 sì.
     releases = gh_get(f"https://api.github.com/repos/{repo}/releases?per_page=1")
     return releases[0] if releases else None
+
+
+def is_dev_release(rel: dict) -> bool:
+    """Controlla se una release è una dev/prerelease da ignorare."""
+    # Ignora le prerelease ufficiali
+    if rel.get("prerelease", False):
+        return True
+    # Ignora i tag che contengono 'dev' (case-insensitive)
+    tag = rel.get("tag_name", "").lower()
+    if "dev" in tag:
+        return True
+    return False
 
 
 def main() -> None:
@@ -81,6 +93,11 @@ def main() -> None:
         # Al primo giro non notifichiamo: registriamo solo la baseline.
         if previous is None:
             print(f"[{repo}] baseline impostata su {tag} (nessuna notifica)")
+            continue
+
+        # Ignora le release dev/prerelease
+        if is_dev_release(rel):
+            print(f"[{repo}] rilascio {tag} ignorato (dev/prerelease)")
             continue
 
         name = rel.get("name") or tag
