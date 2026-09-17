@@ -66,7 +66,14 @@ def is_dev_release(rel: dict) -> bool:
 
 
 def main() -> None:
-    state = json.loads(STATE_FILE.read_text()) if STATE_FILE.exists() else {}
+    if STATE_FILE.exists():
+        try:
+            state = json.loads(STATE_FILE.read_text())
+        except json.JSONDecodeError:
+            print("state.json corrotto, reset dello stato.")
+            state = {}
+    else:
+        state = {}
     changed = False
 
     for repo in REPOS:
